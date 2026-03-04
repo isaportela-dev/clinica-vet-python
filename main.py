@@ -1,3 +1,5 @@
+print("Sistema de Clínica Veterinária iniciado!")
+
 pets = []
 
 def cadastrar_pet():
