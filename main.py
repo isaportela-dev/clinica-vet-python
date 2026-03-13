@@ -1,74 +1,118 @@
-print("Sistema de Clínica Veterinária iniciado!")
+class Pet:
+    def __init__(self, name, species, age, owner):
+        self.name = name
+        self.species = species
+        self.age = age
+        self.owner = owner
+
 
 pets = []
 
-def cadastrar_pet():
-    nome = input("Nome do pet: ")
-    especie = input("Espécie: ")
-    idade = input("Idade: ")
 
-    pet = {
-        "nome": nome,
-        "especie": especie,
-        "idade": idade
-    }
+def show_menu():
+    print("\n=== Veterinary Clinic System ===")
+    print("1 - Register pet")
+    print("2 - List pets")
+    print("3 - Search pet")
+    print("4 - Remove pet")
+    print("5 - Exit")
 
+
+def get_non_empty_input(message):
+    while True:
+        value = input(message).strip()
+        if value:
+            return value
+        print("This field cannot be empty. Please try again.")
+
+
+def get_valid_age():
+    while True:
+        age = input("Pet age: ").strip()
+        if age.isdigit() and int(age) >= 0:
+            return int(age)
+        print("Invalid age. Please enter a valid number.")
+
+
+def register_pet():
+    print("\n--- Register Pet ---")
+    name = get_non_empty_input("Pet name: ")
+    species = get_non_empty_input("Species: ")
+    age = get_valid_age()
+    owner = get_non_empty_input("Owner name: ")
+
+    pet = Pet(name, species, age, owner)
     pets.append(pet)
-    print("Pet cadastrado com sucesso!\n")
+
+    print(f"\n{name} was registered successfully.")
 
 
-def listar_pets():
+def list_pets():
+    print("\n--- Registered Pets ---")
+
     if not pets:
-        print("Nenhum pet cadastrado.\n")
+        print("No pets registered yet.")
         return
 
-    for pet in pets:
-        print(f"Nome: {pet['nome']} | Espécie: {pet['especie']} | Idade: {pet['idade']}")
-    print()
+    for index, pet in enumerate(pets, start=1):
+        print(f"\nPet #{index}")
+        print(f"Name: {pet.name}")
+        print(f"Species: {pet.species}")
+        print(f"Age: {pet.age}")
+        print(f"Owner: {pet.owner}")
+        print("-" * 25)
 
 
-def buscar_pet():
-    nome_busca = input("Digite o nome do pet: ")
+def search_pet():
+    print("\n--- Search Pet ---")
+    search_name = get_non_empty_input("Enter the pet name: ")
+
     for pet in pets:
-        if pet["nome"].lower() == nome_busca.lower():
-            print(f"Encontrado: {pet}")
+        if pet.name.lower() == search_name.lower():
+            print("\nPet found:")
+            print(f"Name: {pet.name}")
+            print(f"Species: {pet.species}")
+            print(f"Age: {pet.age}")
+            print(f"Owner: {pet.owner}")
             return
-    print("Pet não encontrado.\n")
+
+    print("Pet not found.")
 
 
-def remover_pet():
-    nome_remover = input("Digite o nome do pet que deseja remover: ")
+def remove_pet():
+    print("\n--- Remove Pet ---")
+    name_to_remove = get_non_empty_input("Enter the pet name to remove: ")
+
     for pet in pets:
-        if pet["nome"].lower() == nome_remover.lower():
+        if pet.name.lower() == name_to_remove.lower():
             pets.remove(pet)
-            print("Pet removido com sucesso!\n")
+            print(f"{pet.name} was removed successfully.")
             return
-    print("Pet não encontrado.\n")
+
+    print("Pet not found.")
 
 
-def menu():
+def main():
+    print("Veterinary Clinic System started!")
+
     while True:
-        print("1 - Cadastrar pet")
-        print("2 - Listar pets")
-        print("3 - Buscar pet")
-        print("4 - Remover pet")
-        print("5 - Sair")
+        show_menu()
+        option = input("Choose an option: ").strip()
 
-        opcao = input("Escolha uma opção: ")
-
-        if opcao == "1":
-            cadastrar_pet()
-        elif opcao == "2":
-            listar_pets()
-        elif opcao == "3":
-            buscar_pet()
-        elif opcao == "4":
-            remover_pet()
-        elif opcao == "5":
-            print("Encerrando sistema...")
+        if option == "1":
+            register_pet()
+        elif option == "2":
+            list_pets()
+        elif option == "3":
+            search_pet()
+        elif option == "4":
+            remove_pet()
+        elif option == "5":
+            print("Closing system...")
             break
         else:
-            print("Opção inválida!\n")
+            print("Invalid option. Please choose a number between 1 and 5.")
 
 
-menu()
+if __name__ == "__main__":
+    main()
